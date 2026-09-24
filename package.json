@@ -1,0 +1,48 @@
+{
+  "name": "crawlcove",
+  "version": "1.0.0",
+  "description": "Headless SEO crawler CLI — check status codes, redirect chains, titles, meta descriptions, H1s, canonicals, noindex and broken internal links from the command line or CI.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "crawlcove": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "seo",
+    "seo-crawler",
+    "cli",
+    "crawler",
+    "site-audit",
+    "broken-links",
+    "crawl-cove"
+  ],
+  "author": "Crawl Cove",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CrawlCove/crawlcove-cli.git"
+  },
+  "homepage": "https://crawlcove.com/?utm_source=github&utm_medium=crawlcove-cli",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "commander": "^15.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  }
+}
