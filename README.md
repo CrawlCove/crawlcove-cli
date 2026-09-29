@@ -11,7 +11,7 @@ Straight from GitHub (Node 18+):
 npx github:CrawlCove/crawlcove-cli crawl https://example.com
 
 # global command, from a release tarball:
-npm install -g https://github.com/CrawlCove/crawlcove-cli/archive/refs/tags/v1.1.2.tar.gz
+npm install -g https://github.com/CrawlCove/crawlcove-cli/archive/refs/tags/v1.1.3.tar.gz
 crawlcove --version
 ```
 
@@ -57,6 +57,9 @@ everything; a server error (5xx) or unreachable origin allows nothing — the
 same defaults as the Crawl Cove desktop app. `--ignore-robots` turns this off
 for sites you own (a staging host behind a blanket `Disallow: /`, for example).
 
+Requests identify themselves as `crawlcove-cli/<version> (+https://crawlcove.com/open-source/crawlcove-cli)`,
+so a site owner who finds the string in an access log can read what it does.
+
 ## Output
 
 JSON output is one object per crawled page (see
@@ -74,6 +77,8 @@ same thing). CSV output is the same data as RFC 4180 CSV.
 ## Works with CrawlCove
 
 This CLI shares its checks and output shape with [Crawl Cove](https://crawlcove.com/?utm_source=github&utm_medium=crawlcove-cli), a desktop SEO crawler for Windows and Mac. Use this CLI for scripted, scheduled, or CI crawls; open the same site in the desktop app for the full visual report, historical tracking, and Search Console integration.
+
+This repo has its own page on crawlcove.com: [Crawl Cove CLI](https://crawlcove.com/open-source/crawlcove-cli?utm_source=github&utm_medium=crawlcove-cli), with the guide to running an SEO audit from the terminal at [https://crawlcove.com/blog/seo-audit-from-the-terminal](https://crawlcove.com/blog/seo-audit-from-the-terminal?utm_source=github&utm_medium=crawlcove-cli).
 
 ## Related tools
 

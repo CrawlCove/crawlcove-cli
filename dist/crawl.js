@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { summarizeChecks } from './checks.js';
 import { fetchPage } from './fetchPage.js';
 import { parseHtml } from './parseHtml.js';
@@ -11,11 +12,19 @@ export class SeedBlockedByRobotsError extends Error {
         this.name = 'SeedBlockedByRobotsError';
     }
 }
+const { version: PKG_VERSION } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+/**
+ * The product token `crawlcove-cli` is what robots.txt parsers match on (they
+ * truncate at the first `/`), so it never changes. The version tells a site
+ * owner which release hit them; the URL is the page written for someone who
+ * finds this string in an access log.
+ */
+export const DEFAULT_USER_AGENT = `crawlcove-cli/${PKG_VERSION} (+https://crawlcove.com/open-source/crawlcove-cli)`;
 export const DEFAULT_CRAWL_OPTIONS = {
     maxPages: 100,
     concurrency: 4,
     timeoutMs: 15_000,
-    userAgent: 'crawlcove-cli/1.0 (+https://github.com/CrawlCove/crawlcove-cli)',
+    userAgent: DEFAULT_USER_AGENT,
     ignoreRobots: false,
     now: () => new Date()
 };
