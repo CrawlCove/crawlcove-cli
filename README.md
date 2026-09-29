@@ -77,6 +77,7 @@ This CLI shares its checks and output shape with [Crawl Cove](https://crawlcove.
 
 ## Related tools
 
+- [crawlcove-mcp](https://github.com/CrawlCove/crawlcove-mcp) — MCP server that gives Claude, Cursor and other AI assistants the crawl data: crawl a site, list issues, find broken links.
 - [crawlcove-export-spec](https://github.com/CrawlCove/crawlcove-export-spec) — the JSON Schema and CSV column reference this CLI's output follows.
 
 ## License
