@@ -16,11 +16,13 @@
   },
   "scripts": {
     "build": "tsc",
+    "prepare": "npm run build",
     "test": "vitest run",
     "prepublishOnly": "npm run build && npm test"
   },
   "keywords": [
     "seo",
+    "robots-txt",
     "seo-crawler",
     "cli",
     "crawler",
@@ -37,7 +39,8 @@
   "homepage": "https://crawlcove.com/?utm_source=github&utm_medium=crawlcove-cli",
   "dependencies": {
     "cheerio": "^1.2.0",
-    "commander": "^15.0.0"
+    "commander": "^15.0.0",
+    "robots-parser": "^3.0.1"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

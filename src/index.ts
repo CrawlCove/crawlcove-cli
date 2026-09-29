@@ -1,5 +1,6 @@
 /** Library entry point — for scripting against the crawler directly instead of the CLI. */
-export { crawlSite, DEFAULT_CRAWL_OPTIONS, type CrawlOptions } from './crawl.js'
+export { crawlSite, DEFAULT_CRAWL_OPTIONS, SeedBlockedByRobotsError, type CrawlOptions } from './crawl.js'
+export { loadRobots, type RobotsRules } from './robots.js'
 export { summarizeChecks, shouldFail, type CheckSummary } from './checks.js'
 export { toJson, toCsv } from './output.js'
 export type { CrawlResult, PageResult, FailOnCheck } from './types.js'

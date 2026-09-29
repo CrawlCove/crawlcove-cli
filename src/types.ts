@@ -27,6 +27,10 @@ export interface CrawlResult {
   maxPages: number
   pageCount: number
   truncated: boolean
+  /** True when robots.txt was not consulted (`--ignore-robots`). */
+  robotsIgnored: boolean
+  /** Same-origin URLs discovered but never fetched because robots.txt disallows them for this crawler. */
+  robotsBlocked: string[]
   pages: PageResult[]
 }
 

@@ -4,20 +4,19 @@ A command line SEO crawler for scripts and CI — crawl a site headlessly and ch
 
 ## Install
 
-```sh
-npm install -g crawlcove
-```
-
-Or run it without installing:
+Straight from GitHub (Node 18+; builds on install):
 
 ```sh
-npx crawlcove crawl https://example.com
+npm install -g github:CrawlCove/crawlcove-cli
 ```
+
+The npm package `crawlcove` is coming — once it is published, `npm install -g crawlcove`
+and `npx crawlcove crawl https://example.com` will work too.
 
 ## Usage
 
 ```sh
-crawlcove <url> [options]
+crawlcove crawl <url> [options]     # `crawl` is the default command, so `crawlcove <url>` works too
 
 Options:
   -o, --output <format>   json or csv (default: json)
@@ -25,16 +24,30 @@ Options:
   --max-pages <n>         stop after crawling this many pages (default: 100)
   --concurrency <n>       simultaneous requests (default: 4)
   --timeout <ms>          per-request timeout in milliseconds (default: 15000)
+  --ignore-robots         crawl URLs that robots.txt disallows (only for sites you own or are authorised to crawl)
   --fail-on <checks>      comma-separated: broken-links, missing-titles, noindex, redirect-chains, or "none"
                           (default: all four)
   --threshold <n>         exit non-zero once the selected checks total this many issues (default: 1)
 ```
 
+Exit codes: `0` clean, `1` the selected `--fail-on` checks reached `--threshold`,
+`2` usage error or robots.txt disallowed the start URL itself (nothing was fetched).
+
 Example — fail a CI build only on broken links, tolerating everything else:
 
 ```sh
-crawlcove https://staging.example.com --fail-on broken-links --threshold 1
+crawlcove crawl https://staging.example.com --fail-on broken-links --threshold 1
 ```
+
+## robots.txt
+
+The crawler fetches `/robots.txt` before anything else and never requests a
+URL it disallows — skipped URLs are listed under `robotsBlocked` in the output
+and counted on stderr. It honours a `User-agent: crawlcove-cli` group if you
+publish one, otherwise the `*` group. A missing robots.txt (404) allows
+everything; a server error (5xx) or unreachable origin allows nothing — the
+same defaults as the Crawl Cove desktop app. `--ignore-robots` turns this off
+for sites you own (a staging host behind a blanket `Disallow: /`, for example).
 
 ## Output
 
@@ -45,12 +58,10 @@ same thing). CSV output is the same data as RFC 4180 CSV.
 
 ## Limitations (v1)
 
-- **robots.txt is not yet respected.** Point this at sites you're authorised
-  to crawl, and prefer a low `--max-pages` / `--concurrency` on anything you
-  don't control.
 - Noindex detection reads only the `<meta name="robots">` tag, not the
   `X-Robots-Tag` response header.
 - Follows same-origin links only — no scoping to a URL prefix yet.
+- Ignores `Crawl-delay`; use `--concurrency 1` on sites that ask for one.
 
 ## Works with CrawlCove
 

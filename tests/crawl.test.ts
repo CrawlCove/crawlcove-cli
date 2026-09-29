@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { crawlSite, DEFAULT_CRAWL_OPTIONS } from '../src/crawl.js'
+import { crawlSite, DEFAULT_CRAWL_OPTIONS, SeedBlockedByRobotsError } from '../src/crawl.js'
 import { FixtureServer } from './fixtureServer.js'
 
 const NOW = () => new Date('2026-09-24T09:00:00.000Z')
@@ -85,5 +85,46 @@ describe('crawlSite', () => {
     const old = result.pages.find((p) => p.url === base + '/old')!
     expect(old.redirectHops).toBe(1)
     expect(old.finalUrl).toBe(base + '/new')
+  })
+
+  it('never fetches a URL robots.txt disallows, and lists it in robotsBlocked', async () => {
+    let fetchedPrivate = false
+    server = new FixtureServer({
+      '/robots.txt': { headers: { 'content-type': 'text/plain' }, body: 'User-agent: *\nDisallow: /private\n' },
+      '/': { body: '<html><body><a href="/private">P</a><a href="/public">Q</a></body></html>' },
+      '/public': { body: '<html><head><title>Public</title></head><body></body></html>' },
+      '/private': { body: '<html><head><title>Private</title></head><body></body></html>' }
+    })
+    const base = await server.listen()
+    const result = await crawlSite(base + '/', { ...DEFAULT_CRAWL_OPTIONS, now: NOW })
+    fetchedPrivate = result.pages.some((p) => p.url === base + '/private')
+    expect(fetchedPrivate).toBe(false)
+    expect(result.pages.map((p) => p.url).sort()).toEqual([base + '/', base + '/public'].sort())
+    expect(result.robotsBlocked).toEqual([base + '/private'])
+    expect(result.robotsIgnored).toBe(false)
+  })
+
+  it('crawls disallowed URLs when ignoreRobots is set, and says so', async () => {
+    server = new FixtureServer({
+      '/robots.txt': { headers: { 'content-type': 'text/plain' }, body: 'User-agent: *\nDisallow: /\n' },
+      '/': { body: '<html><body><a href="/private">P</a></body></html>' },
+      '/private': { body: '<html><head><title>Private</title></head><body></body></html>' }
+    })
+    const base = await server.listen()
+    const result = await crawlSite(base + '/', { ...DEFAULT_CRAWL_OPTIONS, ignoreRobots: true, now: NOW })
+    expect(result.pageCount).toBe(2)
+    expect(result.robotsIgnored).toBe(true)
+    expect(result.robotsBlocked).toEqual([])
+  })
+
+  it('throws SeedBlockedByRobotsError instead of crawling when the seed itself is disallowed', async () => {
+    server = new FixtureServer({
+      '/robots.txt': { headers: { 'content-type': 'text/plain' }, body: 'User-agent: *\nDisallow: /\n' },
+      '/': { body: '<html><body></body></html>' }
+    })
+    const base = await server.listen()
+    await expect(crawlSite(base + '/', { ...DEFAULT_CRAWL_OPTIONS, now: NOW })).rejects.toBeInstanceOf(
+      SeedBlockedByRobotsError
+    )
   })
 })

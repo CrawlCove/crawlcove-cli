@@ -28,6 +28,8 @@ function result(pages: PageResult[]): CrawlResult {
     maxPages: 100,
     pageCount: pages.length,
     truncated: false,
+    robotsIgnored: false,
+    robotsBlocked: [],
     pages
   }
 }
