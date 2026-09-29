@@ -14,4 +14,6 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build
+      - name: dist/ must be committed up to date (it is what GitHub installs run)
+        run: git diff --exit-code -- dist
       - run: npm test
