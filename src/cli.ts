@@ -2,7 +2,7 @@
 import { writeFileSync } from 'node:fs'
 import { Command } from 'commander'
 import { crawlSite, DEFAULT_CRAWL_OPTIONS, SeedBlockedByRobotsError } from './crawl.js'
-import { summarizeChecks, shouldFail } from './checks.js'
+import { shouldFail } from './checks.js'
 import { toCsv, toJson } from './output.js'
 import { ALL_FAIL_ON_CHECKS, type FailOnCheck } from './types.js'
 
@@ -73,7 +73,7 @@ program
       process.stdout.write(text)
     }
 
-    const summary = summarizeChecks(result)
+    const summary = result.summary
     const robotsNote = result.robotsIgnored
       ? ' robots.txt ignored (--ignore-robots).'
       : result.robotsBlocked.length > 0

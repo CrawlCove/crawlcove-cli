@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 — 2026-09-29
+
+- The JSON result now carries `summary` (`brokenLinks`, `missingTitles`,
+  `noindex`, `redirectChains`) — the same counts the exit code is decided on —
+  so consumers such as `crawlcove-action` no longer re-derive them.
+- Library: `summarizeChecks()` accepts anything with a `pages` array;
+  `CheckSummary` is exported from the package root.
+
 ## 1.0.0 — 2026-09-29
 
 Initial release.

@@ -20,6 +20,14 @@ export interface PageResult {
   brokenInternalLinks: string[]
 }
 
+/** Per-category issue counts for one crawl — the same numbers the CLI's exit code is decided on. */
+export interface CheckSummary {
+  brokenLinks: number
+  missingTitles: number
+  noindex: number
+  redirectChains: number
+}
+
 /** One crawl's full result set. */
 export interface CrawlResult {
   seedUrl: string
@@ -31,6 +39,8 @@ export interface CrawlResult {
   robotsIgnored: boolean
   /** Same-origin URLs discovered but never fetched because robots.txt disallows them for this crawler. */
   robotsBlocked: string[]
+  /** Issue counts across `pages`, so consumers (crawlcove-action, dashboards) need not re-derive them. */
+  summary: CheckSummary
   pages: PageResult[]
 }
 

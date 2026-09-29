@@ -68,6 +68,7 @@ describe('crawlSite', () => {
     const noindexed = result.pages.find((p) => p.url === base + '/noindexed')!
 
     expect(home.brokenInternalLinks).toEqual([base + '/broken'])
+    expect(result.summary).toEqual({ brokenLinks: 2, missingTitles: 3, noindex: 1, redirectChains: 0 })
     expect(broken.statusCode).toBe(404)
     expect(broken.indexable).toBe(false)
     expect(noindexed.robotsMeta).toBe('noindex')

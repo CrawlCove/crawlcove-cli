@@ -1,3 +1,4 @@
+import { summarizeChecks } from './checks.js'
 import { fetchPage } from './fetchPage.js'
 import { parseHtml } from './parseHtml.js'
 import { loadRobots, ROBOTS_IGNORED, type RobotsRules } from './robots.js'
@@ -90,6 +91,7 @@ export async function crawlSite(seedUrl: string, opts: CrawlOptions): Promise<Cr
     truncated,
     robotsIgnored: opts.ignoreRobots,
     robotsBlocked,
+    summary: summarizeChecks({ pages }),
     pages
   }
 }

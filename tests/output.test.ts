@@ -30,6 +30,7 @@ function result(pages: PageResult[]): CrawlResult {
     truncated: false,
     robotsIgnored: false,
     robotsBlocked: [],
+    summary: { brokenLinks: 0, missingTitles: 0, noindex: 0, redirectChains: 0 },
     pages
   }
 }

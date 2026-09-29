@@ -1,18 +1,12 @@
-import type { CrawlResult, FailOnCheck } from './types.js'
+import type { CheckSummary, FailOnCheck, PageResult } from './types.js'
 
-/** Per-category issue count for one crawl. */
-export interface CheckSummary {
-  brokenLinks: number
-  missingTitles: number
-  noindex: number
-  redirectChains: number
-}
+export type { CheckSummary } from './types.js'
 
 /** A redirect chain is 2+ hops — a single redirect (old URL -> canonical new URL) is normal and not flagged. */
 const REDIRECT_CHAIN_MIN_HOPS = 2
 
-/** Count each category's issues across a crawl. */
-export function summarizeChecks(result: CrawlResult): CheckSummary {
+/** Count each category's issues across a crawl's pages. */
+export function summarizeChecks(result: { pages: readonly PageResult[] }): CheckSummary {
   let brokenLinks = 0
   let missingTitles = 0
   let noindex = 0
