@@ -7,12 +7,18 @@ A command line SEO crawler for scripts and CI — crawl a site headlessly and ch
 Straight from GitHub (Node 18+):
 
 ```sh
-npm install -g github:CrawlCove/crawlcove-cli
-# or, without installing:
+# one-off, nothing installed:
 npx github:CrawlCove/crawlcove-cli crawl https://example.com
+
+# global command, from a release tarball:
+npm install -g https://github.com/CrawlCove/crawlcove-cli/archive/refs/tags/v1.1.2.tar.gz
+crawlcove --version
 ```
 
-The npm package `crawlcove` is coming — once it is published, `npm install -g crawlcove`
+The tarball form is deliberate: `npm install -g github:CrawlCove/crawlcove-cli`
+looks like it works on npm 10 but leaves a dangling symlink into npm's cache
+(a non-global `npm install github:CrawlCove/crawlcove-cli` is fine). The npm
+package `crawlcove` is coming — once it is published, `npm install -g crawlcove`
 and `npx crawlcove crawl https://example.com` will work too.
 
 ## Usage

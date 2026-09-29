@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2 — 2026-09-29
+
+- `crawlcove --version`.
+- README: install globally from the release tarball URL; on npm 10 a global
+  `github:` install silently leaves a dangling symlink into npm's cache.
+
 ## 1.1.1 — 2026-09-29
 
 - The built `dist/` is now committed, so `npm install -g github:CrawlCove/crawlcove-cli`

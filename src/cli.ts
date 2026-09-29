@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { Command } from 'commander'
 import { crawlSite, DEFAULT_CRAWL_OPTIONS, SeedBlockedByRobotsError } from './crawl.js'
 import { shouldFail } from './checks.js'
@@ -8,9 +8,14 @@ import { ALL_FAIL_ON_CHECKS, type FailOnCheck } from './types.js'
 
 const program = new Command()
 
+const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')) as {
+  version: string
+}
+
 program
   .name('crawlcove')
   .description('Headless SEO crawler for scripts and CI — crawl a site, check it, exit non-zero on regressions.')
+  .version(version)
 
 program
   .command('crawl', { isDefault: true })
